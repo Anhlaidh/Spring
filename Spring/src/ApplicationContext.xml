@@ -3,12 +3,18 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:aop="http://www.springframework.org/schema/aop"
         xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 default-autowire="byName"> <!-- bean均设置为自动装配 ，子标签可以覆盖全局设置-->
     <context:component-scan base-package="Spring.Annotation" ></context:component-scan>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+        <property name="username" value="scott"></property>
+        <property name="password" value="tiger"></property>
+        <property name="maxActive" value="10"></property>
+        <property name="maxIdle" value="6"></property>
     </bean>
     <bean id="tsManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"></property>
@@ -74,5 +80,23 @@ constructor
 
 -->
     </bean>
+
+
+    <bean id="studentDao" class="Spring.Dao.StudentDaoImpl"></bean>
+    <bean id="studentService" class="Spring.Service.StudentServiceImpl">
+        <property name="studentDao" ref="studentDao"></property>
+    </bean>
+
+<!--    配置前置通知类-->
+
+    <bean id="before" class="Spring.Aop.LogBefore"></bean>
+<!--    将方法与通知进行关联，用例：StudentAdd（）-->
+    <aop:config>
+<!--        配置切入点，在哪里通知-->
+        <aop:pointcut id="pointcut" expression="execution(Spring.Service.StudentServiceImpl.addStudent(Student student))"/>
+<!--        advisor相当于连接切入点和切面的线-->
+        <aop:advisor advice-ref="before"></aop:advisor>
+
+    </aop:config>
 
 </beans>
