@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+        xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+default-autowire="byName"> <!-- bean均设置为自动装配 ，子标签可以覆盖全局设置-->
+    <context></context>
+    <bean id="chinese" class="Spring.test01.Chinese">
+    <property name="axe" ref="axe"></property>
+    </bean>
+    <bean id="axe" class="Spring.test01.StoneAxe">
+
+    </bean>
+    <bean name="teacher" class="Spring.entity.Teacher" p:course="math" p:courseTime="10">
+<!--        创建时赋值-->
+
+<!--        <constructor-arg value="math"></constructor-arg>-->
+<!--        <constructor-arg value="10"></constructor-arg>-->
+    </bean>
+    <bean id="collection" class="Spring.test03.Collection">
+<!--        注入特殊数据类型-->
+
+        <property name="arrayE">
+           <array>
+               <value>aa</value>
+               <value>bb</value>
+               <value>cc</value>
+           </array>
+        </property>
+        <property name="listE">
+            <list>
+                <value>a1</value>
+                <value>b2</value>
+                <null/>
+            </list>
+        </property>
+        <property name="mapE">
+            <map>
+                <entry>
+                    <key>
+                        <value>key</value>
+                    </key>
+                    <value>map_value</value>
+                </entry>
+            </map>
+        </property>
+        <property name="setE">
+            <set>
+                <value>bbb</value>
+                <value>bbb</value>
+            </set>
+        </property>
+    </bean>
+    <bean id="chinese2" class="Spring.test01.Chinese" autowire="constructor">
+<!--        自动装配 IOC容器中恰好有一个beanid为ref所需要的对象，
+    ref
+byName
+bean的id值=类的属性名，根据类的属性名去IOC容器中寻找对应id值
+byType
+寻找其他bean，看是否类型与所需要的匹配，若IOC中有多个满足条件的bean，会报错
+constructor
+其他bean类型是否与构造类的构造器参数类型一直，本质上与type相同
+
+
+-->
+    </bean>
+
+</beans>
