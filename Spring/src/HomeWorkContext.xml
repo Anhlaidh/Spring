@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+
+">
+    <bean id="user" class="homework.Bean.UserInfoBean">
+        <property name="map">
+            <map>
+                <entry>
+                    <key>
+                        <value>zs</value>
+                    </key>
+                    <value>123</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="person" class="homework.Bean.Person">
+        <property name="cat" ref="cat"></property>
+        <property name="dog" ref="dog"></property>
+    </bean>
+    <bean id="cat" class="homework.Bean.Cat"></bean>
+    <bean id="dog" class="homework.Bean.Dog"></bean>
+
+    <bean id="logAspectXML" class="Spring.Aop.LogAspectXML"></bean>
+
+    <aop:aspectj-autoproxy/>
+    <bean id="LogAspect" class="Spring.Aop.LogAspect"></bean>
+    <bean id="student" class="Spring.Aop.StudentImpl"></bean>
+
+    <aop:config>
+        <aop:aspect id="log" ref="logAspectXML">
+           <aop:pointcut id="allSaveMethod" expression="execution(* save*(..))"/>
+            <aop:before method="log" pointcut-ref="allSaveMethod"></aop:before>
+        </aop:aspect>
+    </aop:config>
+</beans>
